@@ -1,0 +1,19 @@
+name: tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      # requirements.txt pins scikit-learn==1.5.2 because outputs/selected_model.pkl only loads on that version
+      - run: pip install -r requirements.txt pytest
+      - run: python -m pytest -q tests
+      - name: CLI still runs end to end
+        run: python predict.py

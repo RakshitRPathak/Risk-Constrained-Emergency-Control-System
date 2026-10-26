@@ -1,5 +1,7 @@
 # TARP ML Module: Intervention-Outcome Classifier
 
+[![tests](https://github.com/RakshitRPathak/Risk-Constrained-Emergency-Control-System/actions/workflows/ci.yml/badge.svg)](https://github.com/RakshitRPathak/Risk-Constrained-Emergency-Control-System/actions/workflows/ci.yml)
+
 Machine-learning and control-layer prototype for the **Risk-Constrained Emergency Control System Using Reversible Micro-Interventions**.
 
 The classifier predicts whether a candidate micro-intervention will be **Protective, Harmful, Ineffective or Inconsistent** *before* it is physically tested. It is the first safety layer only. Escalation to a full action still requires the measured response to confirm protection.
@@ -10,6 +12,7 @@ pip install -r requirements.txt
 mkdir -p data outputs
 python train_eval.py      # generates data, trains 3 models, evaluates, saves figures + model
 python predict.py         # screens one example candidate with the saved model
+pip install pytest && python -m pytest -q tests    # 31 tests: labelling thresholds, safety gate, hard constraint
 ```
 
 ## Files
@@ -18,7 +21,8 @@ python predict.py         # screens one example candidate with the saved model
 | `simulate.py` | Four-zone, source-informed dataset generator (5,000 records) and reference-label rules |
 | `train_eval.py` | Validation checks, stratified 80:20 split, leakage exclusion, 3 classifiers, safety-gate tuning, safety-first model selection, control-layer analysis, figures |
 | `train_eval_utils.py` | Safety-gated decision rule shared by training and inference |
-| `predict.py` | Screens a single candidate: hard protected-zone constraint, then gated model decision |
+| `predict.py` | Screens a single candidate: hard protected-zone constraint, then gated model decision (`screen()` is importable and tested) |
+| `tests/` | Pins the safety logic at its exact thresholds (45, 6, 1, -5), the confidence gate, and that the hard constraint is applied before the model is ever consulted |
 | `outputs/` | `model_comparison.csv`, `results_summary.json`, `feature_importance.csv`, `run_log.txt`, figures, `selected_model.pkl` |
 
 ## Method
