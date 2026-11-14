@@ -35,3 +35,7 @@ pip install pytest && python -m pytest -q tests    # 31 tests: labelling thresho
 
 ## Scope
 Results come from a controlled simulation with prototype thresholds. They validate the software decision logic, not a physical deployment. Seed = 42; every run is reproducible.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
